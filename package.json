@@ -4,7 +4,7 @@
   "description": "This is a profile scraper",
   "main": "Profile.js",
   "scripts": {
-    "start": "Profile.js"
+    "start": "node Profile.js"
   },
   "author": "Saransh Mittal",
   "license": "ISC",
