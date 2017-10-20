@@ -100,6 +100,12 @@ app.get('/users', function(req, res) {
 });
 
 var jwt = require('jsonwebtoken');
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://eeeeeeq-6b9c5.firebaseio.com"
+});
 
 app.post('/authenticate', function(req, res) {
     // find the user
@@ -114,22 +120,43 @@ app.post('/authenticate', function(req, res) {
           res.json({ code: 1, message: 'Authentication failed. Wrong password.' });
         } 
         else {
-          // if user is found and password is right
-          // create a token with only our given payload
-          // we don't want to pass in the entire user since that has the password
-          const payload = {
-            admin: users.admin,
-            registrationNumber : users.regNumber
-          };
-          var token = jwt.sign(payload, '84u3nr8u3n4u2093d039umr2u2m03r', {
-            expiresIn: 1440 // expires in 24 hours
+          // if we using firebase admin SDK to create the real time database
+          var uid = users.regNumber;
+          admin.auth().createCustomToken(uid)
+          .then(function(customToken) {
+            // Send token back to client
+            res.json({
+              code: 0,
+              message: 'Enjoy your token!',
+              token: customToken
+            });
+          })
+          .catch(function(error) {
+            res.json({
+              code: 1,
+              error : error
+            });
+            console.log("Error creating custom token:", error);
           });
-          // return the information including token as JSON
-          res.json({
-            code: 0,
-            message: 'Enjoy your token!',
-            token: token
-          });
+
+          // if we are not using firebase admin sdk for creating realtime database
+          // // if user is found and password is right
+          // // create a token with only our given payload
+          // // we don't want to pass in the entire user since that has the password
+          // const payload = {
+          //   admin: users.admin,
+          //   registrationNumber : users.regNumber
+          // };
+          // var token = jwt.sign(payload, '84u3nr8u3n4u2093d039umr2u2m03r', {
+          //   expiresIn: 1440 // expires in 24 hours
+          // });
+          // //return the information including token as JSON
+          // res.json({
+          //   code: 0,
+          //   message: 'Enjoy your token!',
+          //   token: token
+          // });
+
         }   
       }
   
