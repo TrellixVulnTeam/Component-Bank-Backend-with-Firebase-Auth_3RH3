@@ -31,7 +31,8 @@ app.post('/register', function (req, res, next) {
       if (users == null) {
         Auth.studentAuth(user_id, password, function (name_stud, regno_stud, cookieJ, auth_err) {
           if (auth_err) {
-            res.send(JSON.stringify(auth_err));
+            res.json({"code" : 1, "message" : "Invalid Credentials or VIT server not running!"});
+            //res.send(JSON.stringify(auth_err));
             console.log('Authentication Failed!');
           }
           else{
