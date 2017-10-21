@@ -47,7 +47,7 @@ app.post('/register', function (req, res, next) {
       } 
       else if (users) {
         console.log(users);
-        res.json({ code: 010, message: 'User Already Signed Up!' });
+        res.json({ code: 1, message: 'User Already Signed Up!' });
       }
     });
 
@@ -79,7 +79,7 @@ app.post('/register', function (req, res, next) {
       nick.save(function(err) {
         if (err) throw err;
         console.log('User saved successfully');
-        res.json({ code: 101, details:{
+        res.json({ code: 0, details:{
           "registrationNumber" : registrationNumber,
           "name" : name,
           "dob" : dob, 
