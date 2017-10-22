@@ -47,7 +47,8 @@ app.post('/register', function (req, res, next) {
             name = name_stud;
             registrationNumber = regno_stud;
 
-            const usersRef = ref.child('users/');
+            const ref = db.ref('');
+            const usersRef = ref.child('users');
             usersRef.set({
               registrationNumber : {
                 "firstName" : name,
