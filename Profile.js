@@ -22,6 +22,13 @@ var Schema = mongoose.Schema;
 mongoose.connect('mongodb://techloop:techloop@ds125365.mlab.com:25365/techloop'); // connect to database
 var User   = require('./user'); // get our mongoose model
 
+var admin = require("firebase-admin");
+var serviceAccount = require("./firebase.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://eeeeeeq-6b9c5.firebaseio.com"
+});
+
 app.post('/register', function (req, res, next) {
     console.log('Hello, World!', req.param('username'));
     var user_id = req.body.username;
@@ -40,14 +47,14 @@ app.post('/register', function (req, res, next) {
             name = name_stud;
             registrationNumber = regno_stud;
 
-            const usersRef = ref.child('users/');
-            usersRef.set({
-              registrationNumber : {
-                "firstName" : name,
-                "lastName" : ""
-                "place" : room_no
-              }
-            });
+            // const usersRef = ref.child('users/');
+            // usersRef.set({
+            //   registrationNumber : {
+            //     "firstName" : name,
+            //     "lastName" : ""
+            //     "place" : room_no
+            //   }
+            // });
 
             unirest.get(personal_details)
             .jar(cookieJ)
@@ -111,12 +118,6 @@ app.get('/users', function(req, res) {
 });
 
 var jwt = require('jsonwebtoken');
-var admin = require("firebase-admin");
-var serviceAccount = require("./firebase.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://eeeeeeq-6b9c5.firebaseio.com"
-});
 
 app.post('/authenticate', function(req, res) {
     // find the user
