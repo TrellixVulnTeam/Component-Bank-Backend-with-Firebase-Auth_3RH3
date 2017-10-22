@@ -47,14 +47,14 @@ app.post('/register', function (req, res, next) {
             name = name_stud;
             registrationNumber = regno_stud;
 
-            // const usersRef = ref.child('users/');
-            // usersRef.set({
-            //   registrationNumber : {
-            //     "firstName" : name,
-            //     "lastName" : ""
-            //     "place" : room_no
-            //   }
-            // });
+            const usersRef = ref.child('users/');
+            usersRef.set({
+              registrationNumber : {
+                "firstName" : name,
+                "lastName" : "",
+                "place" : room_no
+              }
+            });
 
             unirest.get(personal_details)
             .jar(cookieJ)
